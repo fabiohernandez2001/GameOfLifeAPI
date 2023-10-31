@@ -3,12 +3,15 @@
     public class Board
     {
         private List<Cell> cells;
+        int x, y;
         public Board(bool[][] initialState) 
         {
             cells = new List<Cell>();
-            for (int i = 0; i < initialState.Length; i++)
+            x = initialState.Length;
+            y = initialState[0].Length;
+            for (int i = 0; i < x; i++)
             {
-                for (int j = 0; j < initialState[0].Length; j++)
+                for (int j = 0; j < y; j++)
                 {
                     cells.Add(new Cell(initialState[i][j], i, j));
                 }
@@ -21,14 +24,17 @@
             return Equals(obj as Board);
         }
 
-        public string GetBoard() 
+        public bool[][] GetTable() 
         {
-            string board = string.Empty;
+            bool[][] board= new bool[x][];
+            for (int i = 0; i < x; i++) {
+                board[i] = new bool[y];}
+
             foreach (var cell in cells) {
-                board += cell.ToString() + ", ";
+                board[cell.getX()][cell.getY()] = cell.IsAlive();
             }
 
-            return board.SkipLast(1).ToString();
+            return board;
         }
 
         public void Next()

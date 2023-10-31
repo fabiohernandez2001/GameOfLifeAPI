@@ -42,6 +42,13 @@ public class Cell : ICloneable
         return $"[State: {state}, Position: {x} , {y} ]";
     }
 
+    public int getX() {
+        return x;
+    }
+    public int getY()
+    {
+        return y;
+    }
     public object Clone()
     {
         return new Cell(this.IsAlive(), x, y);

@@ -9,7 +9,6 @@ namespace GameOfLifeAPI.Controllers
     [ApiController]
     public class GameController : ControllerBase
     {
-        JSONUtilities JSON = new JSONUtilities();
         
         // POST api/<GameController>
         [HttpPost]
@@ -17,8 +16,7 @@ namespace GameOfLifeAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult Post([FromBody] bool[][] board) {
             GameOfLife Game = new GameOfLife(board);
-            int id = JSON.CreateFile(Game);
-            if ( id>=0){ return Created(nameof(Game), id); }
+            if ( Game.GetId()>=0){ return Created(nameof(Game), Game.GetId()); }
 
             return BadRequest();
 
@@ -28,8 +26,11 @@ namespace GameOfLifeAPI.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult Put(int id, [FromBody] bool[][] board) {
-
+        public ActionResult Put(int id, [FromBody] bool[][] dummy) {
+            if (id == 0) {
+                return BadRequest(); }
+            GameOfLife game = new GameOfLife(dummy, id);
+            game.Next();
             return Ok();
         }
 
