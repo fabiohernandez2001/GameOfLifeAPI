@@ -4,26 +4,17 @@ public class GameOfLife
 {
     private Board board;
     private int Id;
-    private JSONUtilities JSONUtilities = new JSONUtilities();
     public GameOfLife(bool[][] ecosystem, int Id=0)
     {
-        if (Id == 0) {
-            this.Id = JSONUtilities.FindIdJSON();
-            board = new Board(ecosystem);
-            JSONUtilities.CreateJSON(this);
-        }
-        else {
-            this.Id = Id;
-            board = new Board(JSONUtilities.ReadJSON(Id));
-        }
+        this.Id=Id;
+        this.board = new Board(ecosystem);
     }
     public void Next()
     {
         board.Next();
-        JSONUtilities.UpdateJSON(this);
     }
 
-    internal int GetId() {
+    public int GetId() {
         return Id;
     }
     internal bool[][] GetBoard() {
