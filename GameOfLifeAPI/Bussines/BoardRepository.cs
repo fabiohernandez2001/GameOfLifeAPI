@@ -9,6 +9,11 @@ namespace GameOfLifeAPI.Model
             boardRepository=new FileSystemBoardRepository();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="board"></param>
+        /// <returns></returns>
         public int CreateGameOfLife(bool[][] board) {
 
             int Id=boardRepository.CreateJSON<bool[][]>(board);
@@ -18,6 +23,11 @@ namespace GameOfLifeAPI.Model
             return Id;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         public bool UpdateGameOfLife(int Id) {
             bool[][] board = (bool[][])boardRepository.ReadJSON<bool[][]>(Id);
             if (board == null) {

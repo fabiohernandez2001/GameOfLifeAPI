@@ -10,13 +10,10 @@ namespace GameOfLifeAPI.Persistance
 
         }
 
-        
-
         public string GetPath() {
             return path;
-
         }
-        public int CreateJSON<T>(bool[][] board) {
+        public int CreateJSON<T>(Object board) {
             int Id = FindNewIdJSON();
             string pathfile = Path.Combine(path, Id.ToString()+".json");
             if (File.Exists(pathfile)) {
@@ -29,6 +26,10 @@ namespace GameOfLifeAPI.Persistance
         public Object ReadJSON<T>(int id)
         {
             string[] JSON = Directory.GetFiles(path, id.ToString() + ".json");
+            if (JSON.Length == 0) {
+                return null;
+
+            }
             string content = File.ReadAllText(JSON[0]);
             var deserialize = JsonSerializer.Deserialize<T>(content);
             if (deserialize != null)
