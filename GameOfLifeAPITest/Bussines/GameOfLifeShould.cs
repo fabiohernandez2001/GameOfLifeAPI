@@ -1,4 +1,5 @@
 using FluentAssertions;
+using GameOfLifeAPI.Model;
 using NUnit.Framework;
 
 namespace GameOfLifeAPITest.Bussines
@@ -6,9 +7,23 @@ namespace GameOfLifeAPITest.Bussines
     [TestClass]
     public class GameOfLifeShould
     {
+        [TearDown]
+        public void Delete()
+        {
+            string path = @"C:\Users\fahernandez\source\repos\GameOfLifeAPI\GameOfLifeAPI\Persistance\GamesJSON\";
+            DirectoryInfo directory = new DirectoryInfo(path);
+            FileInfo[] files = directory.GetFiles();
+            if (files.Length > 0)
+            {
+                var recentFile = files.OrderByDescending(f => f.LastWriteTime).FirstOrDefault();
+                string pathfile = Path.Combine(path, recentFile.Name);
+                File.Delete(pathfile);
+            }
+        }
         [Test]
         public void given_neigborhood_should_return_more()
         {
+            BoardRepository boardRepository=new BoardRepository();
             bool[][] ecosystem = new bool[3][];
             bool[] row1 = { false, true, false };
             bool[] row2 = { true, true, true };
@@ -17,7 +32,7 @@ namespace GameOfLifeAPITest.Bussines
             ecosystem[1] = row2;
             ecosystem[2] = row3;
 
-            GameOfLife gameOfLife = new GameOfLife(ecosystem);
+            GameOfLife gameOfLife = new GameOfLife(ecosystem, boardRepository);
 
             gameOfLife.Next();
             bool[][] expected_ecosystem = new bool[3][];
@@ -28,12 +43,13 @@ namespace GameOfLifeAPITest.Bussines
             expected_ecosystem[1] = row5;
             expected_ecosystem[2] = row6;
 
-            var expectedGame = new GameOfLife(expected_ecosystem);
+            var expectedGame = new GameOfLife(expected_ecosystem ,boardRepository);
             gameOfLife.Equals(expectedGame).Should().BeTrue();
         }
         [Test]
         public void given_empty_neigborhood_should_return_same()
         {
+            BoardRepository boardRepository = new BoardRepository();
             bool[][] ecosystem = new bool[3][];
             bool[] row1 = { false, false, false };
             bool[] row2 = { false, false, false };
@@ -42,7 +58,7 @@ namespace GameOfLifeAPITest.Bussines
             ecosystem[1] = row2;
             ecosystem[2] = row3;
 
-            GameOfLife gameOfLife = new GameOfLife(ecosystem);
+            GameOfLife gameOfLife = new GameOfLife(ecosystem, boardRepository);
 
             gameOfLife.Next();
             bool[][] expected_ecosystem = new bool[3][];
@@ -53,13 +69,14 @@ namespace GameOfLifeAPITest.Bussines
             expected_ecosystem[1] = row5;
             expected_ecosystem[2] = row6;
 
-            var expectedGame = new GameOfLife(expected_ecosystem);
+            var expectedGame = new GameOfLife(expected_ecosystem, boardRepository);
             gameOfLife.Should().BeEquivalentTo(expectedGame);
         }
 
         [Test]
         public void given_neigborhood_should_return_lower()
         {
+            BoardRepository boardRepository = new BoardRepository();
             bool[][] ecosystem = new bool[3][];
             bool[] row1 = { true, true, true };
             bool[] row2 = { true, false, true };
@@ -68,7 +85,7 @@ namespace GameOfLifeAPITest.Bussines
             ecosystem[1] = row2;
             ecosystem[2] = row3;
 
-            GameOfLife gameOfLife = new GameOfLife(ecosystem);
+            GameOfLife gameOfLife = new GameOfLife(ecosystem, boardRepository);
 
             gameOfLife.Next();
             bool[][] expected_ecosystem = new bool[3][];
@@ -79,7 +96,7 @@ namespace GameOfLifeAPITest.Bussines
             expected_ecosystem[1] = row5;
             expected_ecosystem[2] = row6;
 
-            var expectedGame = new GameOfLife(expected_ecosystem);
+            var expectedGame = new GameOfLife(expected_ecosystem, boardRepository);
             gameOfLife.Should().BeEquivalentTo(expectedGame);
         }
     }

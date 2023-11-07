@@ -9,19 +9,28 @@ namespace GameOfLifeAPI.Persistance
         public FileSystemBoardRepository() {
 
         }
-
+        public int FindNewIdJSON()
+        {
+            int Id = random.Next();
+            string[] JSON = Directory.GetFiles(path, Id.ToString() + ".json");
+            while (JSON.Length > 0)
+            {
+                Id = random.Next();
+                JSON = Directory.GetFiles(path, Id.ToString() + ".json");
+            }
+            return Id;
+        }
         public string GetPath() {
             return path;
         }
-        public int CreateJSON<T>(Object board) {
-            int Id = FindNewIdJSON();
-            string pathfile = Path.Combine(path, Id.ToString()+".json");
-            if (File.Exists(pathfile)) {
-                return -1;
-            }
 
+        public bool FindJSON(string Id) {
+            string pathfile = Path.Combine(path, Id + ".json");
+            return File.Exists(pathfile);
+        }
+        public void CreateJSON<T>(string Id, Object board) {
+            string pathfile = Path.Combine(path, Id +".json");
             WriteJSON<T>(pathfile, board);
-            return Id;
         }
         public Object ReadJSON<T>(int id)
         {
@@ -63,17 +72,7 @@ namespace GameOfLifeAPI.Persistance
             var SerializedGame = JsonSerializer.Serialize(content);
             File.WriteAllText(pathfile, SerializedGame);
         }
-        private int FindNewIdJSON()
-        {
-            int Id = random.Next();
-            string[] JSON = Directory.GetFiles(path, Id.ToString() + ".json");
-            while (JSON.Length > 0)
-            {
-                Id = random.Next();
-                JSON = Directory.GetFiles(path, Id.ToString() + ".json");
-            }
-            return Id;
-        }
+        
         
     }
 }

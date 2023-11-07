@@ -1,12 +1,13 @@
 ﻿using GameOfLifeAPI.Persistance;
+using KataGameOfLife;
 
 namespace GameOfLifeAPI.Model
 {
     public class BoardRepository
     {
-        private readonly FileSystemBoardRepository  boardRepository;
+        private readonly FileSystemBoardRepository  fileSystem;
         public BoardRepository() {
-            boardRepository=new FileSystemBoardRepository();
+            fileSystem=new FileSystemBoardRepository();
         }
 
         /// <summary>
@@ -14,29 +15,45 @@ namespace GameOfLifeAPI.Model
         /// </summary>
         /// <param name="board"></param>
         /// <returns></returns>
-        public int CreateGameOfLife(bool[][] board) {
 
-            int Id=boardRepository.CreateJSON<bool[][]>(board);
-            if (Id < 0) {
-                return -1;
+        public int GetIdJSON(int Id) {
+            if (Id != 0) {
+                if (fileSystem.FindJSON(Id.ToString()))
+                {
+                    return Id;
+                }
+                return 0;
             }
-            return Id;
-        }
 
+            int newId = fileSystem.FindNewIdJSON();
+            return newId;
+        }
+        public bool[][] GetGameOfLife(int Id, bool[][] board) {
+            if (Id != 0) {
+                if (!fileSystem.FindJSON(Id.ToString())) {
+                    bool[][] falseBoard = new bool[1][];
+                    falseBoard[0] = new bool[1];
+                    falseBoard[0][0] = false;
+                    return falseBoard;
+                }
+                return (bool[][])fileSystem.ReadJSON<bool[][]>(Id);
+            }
+            bool[][] newBoard = board;
+            fileSystem.CreateJSON<bool[][]>(Id.ToString(), board);
+            return newBoard;
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public bool UpdateGameOfLife(int Id) {
-            bool[][] board = (bool[][])boardRepository.ReadJSON<bool[][]>(Id);
+        public bool UpdateGameOfLife(int Id, bool[][] newBoard) {
+            bool[][] board = (bool[][])fileSystem.ReadJSON<bool[][]>(Id);
             if (board == null) {
                 return false;
             }
 
-            GameOfLife game = new GameOfLife(board, Id);
-            game.Next();
-            boardRepository.UpdateJSON<bool[][]>(Id, game.GetBoard());
+            fileSystem.UpdateJSON<bool[][]>(Id, newBoard);
             return true;
         }
     }

@@ -38,7 +38,9 @@ namespace GameOfLifeAPI.Api.Controllers
                     if (board[i][j]==null){ return BadRequest(); }
                 }
             }
-            var id = repository.CreateGameOfLife(board);
+
+            GameOfLife game = new GameOfLife(board, repository);
+            var id = game.GetId();
             if (id < 0) {
                 return BadRequest();
 
@@ -64,7 +66,8 @@ namespace GameOfLifeAPI.Api.Controllers
                 return BadRequest();
 
             }
-            if (!repository.UpdateGameOfLife(id)) {
+            GameOfLife game = new GameOfLife(dummy, repository, id);
+            if (game.GetId()==0) {
                 return NotFound();
 
             } 

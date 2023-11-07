@@ -18,8 +18,8 @@ namespace GameOfLifeAPITest.Infrastructure
                bools[0] = row1;
                bools[1] = row2;
                bools[2] = row3;
-
-               int Id = FileSystem.CreateJSON<bool[][]>(bools);
+               int Id=FileSystem.FindNewIdJSON();
+               FileSystem.CreateJSON<bool[][]>(Id.ToString(),bools);
                bool[][] resultedEcosystem=(bool[][])FileSystem.ReadJSON<bool[][]>(Id);
                FileSystem.DeleteJSON(Id); 
                bools.Should().BeEquivalentTo(resultedEcosystem);
@@ -45,7 +45,8 @@ namespace GameOfLifeAPITest.Infrastructure
                new_bools[1] = row5; 
                new_bools[2] = row6;
 
-               int Id=FileSystem.CreateJSON<bool[][]>(bools);
+               int Id = FileSystem.FindNewIdJSON();
+               FileSystem.CreateJSON<bool[][]>(Id.ToString(), bools);
                FileSystem.UpdateJSON<bool[][]>(Id,new_bools);
                bool[][] readBools = (bool[][])FileSystem.ReadJSON<bool[][]> (Id);
                FileSystem.DeleteJSON(Id);
