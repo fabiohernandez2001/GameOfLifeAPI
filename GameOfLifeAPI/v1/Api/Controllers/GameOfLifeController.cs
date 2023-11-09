@@ -8,9 +8,9 @@ namespace GameOfLifeAPI.Api.Controllers
     /// <summary>
     /// API to play game of life
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("v1/api/[controller]")]
     [ApiController]
-    public class GameOfLifeController : ControllerBase
+    public class GameOfLifeControllerV1 : ControllerBase
     {
         private BoardRepository repository = new BoardRepository();
 
@@ -62,7 +62,7 @@ namespace GameOfLifeAPI.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult Put(int id, [FromBody] bool[][] dummy) {
-            if (id < 0) {
+            if (id <= 0) {
                 return BadRequest();
 
             }

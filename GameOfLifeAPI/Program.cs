@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "GameOfLife API",
+        Title = "GameOfLife API v1",
         Description = "An ASP.NET Core Web API for managing GameOfLife items",
         TermsOfService = new Uri("https://example.com/terms"),
         Contact = new OpenApiContact
@@ -22,6 +22,20 @@ builder.Services.AddSwaggerGen(options =>
         },
         License = new OpenApiLicense
         {
+            Name = "Example License",
+            Url = new Uri("https://example.com/license")
+        }
+    });
+    options.SwaggerDoc("v2", new OpenApiInfo {
+        Version = "v2",
+        Title = "GameOfLife API v2",
+        Description = "An ASP.NET Core Web API for managing GameOfLife items with builder",
+        TermsOfService = new Uri("https://example.com/terms"),
+        Contact = new OpenApiContact {
+            Name = "Example Contact",
+            Url = new Uri("https://example.com/contact")
+        },
+        License = new OpenApiLicense {
             Name = "Example License",
             Url = new Uri("https://example.com/license")
         }

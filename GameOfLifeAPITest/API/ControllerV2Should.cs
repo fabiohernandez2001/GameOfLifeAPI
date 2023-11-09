@@ -5,10 +5,11 @@ using System.Text.Json;
 using FluentAssertions;
 using GameOfLifeAPI.Api.Controllers;
 using Microsoft.AspNetCore.Mvc;
+
 namespace GameOfLifeAPITest.API
 {
     [TestClass]
-    public class ControllerShould
+    public class ControllerV2Should
     {
         [TearDown]
         public void Delete() {
@@ -23,18 +24,20 @@ namespace GameOfLifeAPITest.API
         }
         [Test]
         public void given_good_request_when_post_should_return_created() {
-            GameOfLifeController controller = new GameOfLifeController();
-            bool[][] goodRequest = new bool[1][];
-            goodRequest[0] = new bool[1];
-            goodRequest[0][0] = true;
+            GameOfLifeControllerV2 controller = new GameOfLifeControllerV2();
+            int[][] goodRequest = new int[1][];
+            goodRequest[0] = new int[2];
+            goodRequest[0][0] = 1;
+            goodRequest[0][1] = 1;
+
             ActionResult action = controller.Post(goodRequest);
             action.Should().BeEquivalentTo(controller.StatusCode(201));
         }
         [Test]
         public void given_bad_request_when_post_should_return_bad_request()
         {
-            GameOfLifeController controller = new GameOfLifeController();
-            bool[][] badrequest = new bool[1][];
+            GameOfLifeControllerV2 controller = new GameOfLifeControllerV2();
+            int[][] badrequest = new int[1][];
             badrequest[0] = null;
             ActionResult action = controller.Post(badrequest);
             action.Should().BeEquivalentTo(controller.StatusCode(400));
@@ -42,7 +45,7 @@ namespace GameOfLifeAPITest.API
         [Test]
         public void given_good_request_when_put_should_return_ok()
         {
-            GameOfLifeController controller = new GameOfLifeController();
+            GameOfLifeControllerV2 controller = new GameOfLifeControllerV2();
             bool[][] goodRequest = new bool[1][];
             goodRequest[0] = new bool[1];
             goodRequest[0][0] = true;
@@ -55,13 +58,13 @@ namespace GameOfLifeAPITest.API
         [Test]
         public void given_bad_request_when_put_return_bad_request() {
             int Id = -1;
-            GameOfLifeController controller = new GameOfLifeController();
+            GameOfLifeControllerV2 controller = new GameOfLifeControllerV2();
             ActionResult action =controller.Put(Id,null);
             action.Should().BeEquivalentTo(controller.StatusCode(400));
         }
         [Test]
         public void given_id_with_no_file_when_put_return_not_found() {
-            GameOfLifeController controller = new GameOfLifeController();
+            GameOfLifeControllerV2 controller = new GameOfLifeControllerV2();
             ActionResult action = controller.Put(1, null);
             action.Should().BeEquivalentTo(controller.StatusCode(404));
         }
