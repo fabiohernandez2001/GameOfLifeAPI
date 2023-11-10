@@ -1,4 +1,4 @@
-﻿namespace KataGameOfLifeTests;
+﻿namespace GameOfLifeKata.API.Controllers;
 
 public class EcosystemBuilder
 {

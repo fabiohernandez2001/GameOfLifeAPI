@@ -13,7 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Persistance\GamesJSON\" />
+    <ProjectReference Include="..\GameOfLifePersistance\GameOfLifeInfrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="v1\Api\Controllers\" />
+    <Folder Include="v2\Api\Controllers\" />
   </ItemGroup>
 
 </Project>

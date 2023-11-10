@@ -1,14 +1,59 @@
-﻿
+﻿using GameOfLifeAPI.Model;
 using System.Text.Json;
-namespace GameOfLifeAPI.Persistance
-{
-    public class FileSystemBoardRepository
-    {
-        private string path = @"C:\Users\fahernandez\source\repos\GameOfLifeAPI\GameOfLifeAPI\Persistance\GamesJSON\";
-        private Random random = new Random();
-        public FileSystemBoardRepository() {
+using KataGameOfLife;
 
+namespace GameOfLifePersistance
+{
+    public class FileSystemBoardRepository : BoardRepository
+    {
+        private Random random = new Random();
+        private string path;
+        public FileSystemBoardRepository() {
+        path = @"C:\Users\fahernandez\source\repos\GameOfLifeAPI\GameOfLifePersistance\GamesJSON\";
+    }
+
+        public void Save(Board board) {
+            throw new NotImplementedException();
         }
+
+        public Board Get(int id) {
+            throw new NotImplementedException();
+        }
+
+        public int save(int id, bool[][] boardBools) {
+            int newid;
+            string serializedGame;
+            if (id == 0) {
+                newid = random.Next();
+                serializedGame = JsonSerializer.Serialize(boardBools);
+            }
+            else {
+                newid = id;
+                bool[][] board = get(newid);
+                GameOfLife game = new GameOfLife(board);
+                game.Next();
+                serializedGame = JsonSerializer.Serialize(game.GetBoard());
+            }
+            string pathfile = Path.Combine(path, newid.ToString() + ".json");
+            File.WriteAllText(pathfile, serializedGame);
+            return newid;
+        }
+
+        public bool[][]? get(int id) {
+            string[] JSON = Directory.GetFiles(path, id.ToString() + ".json");
+            if (JSON.Length == 0)
+            {
+                return null;
+
+            }
+            string content = File.ReadAllText(JSON[0]);
+            var deserialize = JsonSerializer.Deserialize<bool[][]>(content);
+            if (deserialize != null)
+                return  deserialize;
+            else
+                return null;
+        }
+        /*
         public int FindNewIdJSON()
         {
             int Id = random.Next();
@@ -72,7 +117,7 @@ namespace GameOfLifeAPI.Persistance
             var SerializedGame = JsonSerializer.Serialize(content);
             File.WriteAllText(pathfile, SerializedGame);
         }
-        
+        */
         
     }
 }

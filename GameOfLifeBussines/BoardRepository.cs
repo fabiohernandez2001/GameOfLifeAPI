@@ -1,21 +1,22 @@
-﻿using GameOfLifeAPI.Persistance;
+﻿
+
 using KataGameOfLife;
 
 namespace GameOfLifeAPI.Model
 {
-    public class BoardRepository
-    {
-        private readonly FileSystemBoardRepository  fileSystem;
-        public BoardRepository() {
-            fileSystem=new FileSystemBoardRepository();
-        }
+    public interface BoardRepository {
 
+        public void Save(Board board);
+        public Board Get(int id);
+        public int save(int id, bool[][] boardBools);
+        public bool[][] get(int id);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="board"></param>
         /// <returns></returns>
 
+        /*
         public int GetIdJSON(int Id) {
             if (Id != 0) {
                 if (fileSystem.FindJSON(Id.ToString()))
@@ -43,7 +44,7 @@ namespace GameOfLifeAPI.Model
             return newBoard;
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
@@ -56,5 +57,6 @@ namespace GameOfLifeAPI.Model
             fileSystem.UpdateJSON<bool[][]>(Id, newBoard);
             return true;
         }
+        */
     }
 }
