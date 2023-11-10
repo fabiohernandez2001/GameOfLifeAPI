@@ -20,4 +20,10 @@
     <ProjectReference Include="..\GameOfLifePersistance\GameOfLifeInfrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="assets\4a669889-399f-4854-a5b8-409ec5566b71.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

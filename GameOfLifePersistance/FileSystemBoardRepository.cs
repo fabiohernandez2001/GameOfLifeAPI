@@ -19,8 +19,8 @@ public class FileSystemBoardRepository : BoardRepository
         File.WriteAllText(filepath, content);
     }
 
-    public Board Get(int id) {
-        throw new NotImplementedException();
+    public Board Get(Guid id) {
+        return null;
     }
 
     public int save(int id, bool[][] boardBools) {

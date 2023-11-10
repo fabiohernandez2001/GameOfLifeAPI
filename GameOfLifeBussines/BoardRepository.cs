@@ -7,7 +7,7 @@ namespace GameOfLifeAPI.Model
     public interface BoardRepository {
 
         public void Save(Board board);
-        public Board Get(int id);
+        public Board Get(Guid id);
         public int save(int id, bool[][] boardBools);
         public bool[][] get(int id);
         /// <summary>
