@@ -4,8 +4,9 @@
     {
         private List<Cell> cells;
         int x, y;
-        public Board(bool[][] initialState) 
-        {
+        public Guid id { get; }
+        public Board(bool[][] initialState) {
+            id = Guid.NewGuid();
             cells = new List<Cell>();
             x = initialState.Length;
             y = initialState[0].Length;

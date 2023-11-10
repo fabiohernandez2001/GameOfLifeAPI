@@ -8,12 +8,12 @@ namespace GameOfLifePersistance
     {
         private Random random = new Random();
         private string path;
-        public FileSystemBoardRepository() {
-        path = @"C:\Users\fahernandez\source\repos\GameOfLifeAPI\GameOfLifePersistance\GamesJSON\";
+        public FileSystemBoardRepository(string path) {
+        this.path = path;
     }
 
         public void Save(Board board) {
-            throw new NotImplementedException();
+
         }
 
         public Board Get(int id) {

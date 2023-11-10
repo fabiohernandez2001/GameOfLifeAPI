@@ -31,7 +31,7 @@ namespace GameOfLifeKata.API.Controllers.v1
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult Post([FromBody] bool[][] board) {
-            FileSystemBoardRepository fileSystem = new FileSystemBoardRepository();
+            FileSystemBoardRepository fileSystem = new FileSystemBoardRepository("");
             for (int i = 0; i < board.Length; i++) {
                 if (board[i]==null){ return BadRequest(); }
                 for (int j = 0; j < board[i].Length; j++) {
@@ -61,7 +61,7 @@ namespace GameOfLifeKata.API.Controllers.v1
                 return BadRequest();
 
             }
-            FileSystemBoardRepository fileSystem = new FileSystemBoardRepository();
+            FileSystemBoardRepository fileSystem = new FileSystemBoardRepository("");
             if (fileSystem.get(id) == null) {
                 return NotFound(); }
             fileSystem.save(id,dummy);

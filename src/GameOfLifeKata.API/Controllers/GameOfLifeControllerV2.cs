@@ -43,7 +43,7 @@ namespace GameOfLifeKata.API.Controllers
 
                 builder.WithAliveCell(board[i][0], board[i][1]);
             }
-            FileSystemBoardRepository filesystem = new FileSystemBoardRepository();
+            FileSystemBoardRepository filesystem = new FileSystemBoardRepository("");
             int newid=filesystem.save(0,builder.Build());
             
             if (newid < 0) {
@@ -71,7 +71,7 @@ namespace GameOfLifeKata.API.Controllers
                 return BadRequest();
 
             }
-            FileSystemBoardRepository fileSystem = new FileSystemBoardRepository();
+            FileSystemBoardRepository fileSystem = new FileSystemBoardRepository("");
             if (fileSystem.get(id) == null)
             {
                 return NotFound();
