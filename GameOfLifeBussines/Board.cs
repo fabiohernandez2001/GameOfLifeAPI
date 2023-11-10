@@ -2,8 +2,9 @@
 {
     public class Board
     {
-        private List<Cell> cells;
-        int x, y;
+        public List<Cell> cells { get; private set; }
+        public int x{ get; }
+        public int y{ get; }
         public Guid id { get; }
         public Board(bool[][] initialState) {
             id = Guid.NewGuid();

@@ -2,9 +2,9 @@
 namespace KataGameOfLife;
 public class Cell : ICloneable
 {
-	private State state;
-	private int x;
-	private int y;
+	public State state { get; private set; }
+	public int x { get; }
+	public int y { get; }
 	public Cell(bool isAlive, int x, int y)
 	{
         this.state = isAlive? State.Alive: State.Dead;

@@ -1,8 +1,9 @@
-﻿using FluentAssertions;
+﻿using System.Text.Json;
+using FluentAssertions;
 using GameOfLifePersistance;
 using KataGameOfLife;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
+
 
 namespace GameOfLifeAPIInfrastructureShould
 {
@@ -24,7 +25,10 @@ namespace GameOfLifeAPIInfrastructureShould
 
             fileSystem.Save(board);
 
-            File.Exists(Path.Combine(path, $"{board.id}.json")).Should().BeTrue();
+            var filepath = Path.Combine(path, $"{board.id}.json");
+            File.Exists(filepath).Should().BeTrue();
+            BoardDTO boardDto = JsonSerializer.Deserialize<BoardDTO>(File.ReadAllText(filepath));
+            boardDto.Should().BeEquivalentTo(board.ToDTO());
         }
     }
 }
