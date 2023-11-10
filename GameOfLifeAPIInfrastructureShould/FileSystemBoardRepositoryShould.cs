@@ -10,7 +10,7 @@ namespace GameOfLifeAPIInfrastructureShould
     
     internal class FileSystemBoardRepositoryShould
     {
-        string path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Saved");
+        string path = Path.Combine(TestContext.CurrentContext.TestDirectory, "assets");
         private FileSystemBoardRepository fileSystem;
 
         [SetUp]
@@ -22,7 +22,7 @@ namespace GameOfLifeAPIInfrastructureShould
         public void save_the_given_board() {
             var initialState = new bool[1][];
             initialState[0] = new bool[1];
-            Board board = new Board(initialState);
+            Board board = Board.Create(initialState);
             
 
             fileSystem.Save(board);
@@ -42,7 +42,7 @@ namespace GameOfLifeAPIInfrastructureShould
 
             var initialState = new bool[1][];
             initialState[0] = new bool[1];
-            Board expected_board = new Board(initialState);
+            Board expected_board = Board.Create(initialState);
             board.Should().BeEquivalentTo(expected_board);
         }
     }

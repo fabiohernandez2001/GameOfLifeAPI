@@ -7,7 +7,7 @@ public class GameOfLife
     private int Id;
     public GameOfLife(bool[][] ecosystem, int Id=0) {
         this.Id = Id;
-        this.board = new Board(ecosystem);
+        this.board = Board.Create(ecosystem);
     }
     public void Next()
     {

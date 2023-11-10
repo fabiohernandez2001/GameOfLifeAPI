@@ -6,11 +6,12 @@
         public int x{ get; }
         public int y{ get; }
         public Guid id { get; }
-        public Board(bool[][] initialState) {
-            id = Guid.NewGuid();
-            cells = new List<Cell>();
-            x = initialState.Length;
-            y = initialState[0].Length;
+
+        public static Board Create(bool[][] initialState) {
+            var id = Guid.NewGuid();
+            var cells = new List<Cell>();
+            var x = initialState.Length;
+            var y = initialState[0].Length;
             for (int i = 0; i < x; i++)
             {
                 for (int j = 0; j < y; j++)
@@ -18,6 +19,16 @@
                     cells.Add(new Cell(initialState[i][j], i, j));
                 }
             }
+
+            return new Board(id, x, y, cells);
+        }
+        
+
+        public Board(Guid id, int x, int y, List<Cell> cells) {
+            this.id = id;
+            this.x = x;
+            this.y = y;
+            this.cells = cells;
         }
 
         public override bool Equals(object? obj)

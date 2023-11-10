@@ -20,7 +20,9 @@ public class FileSystemBoardRepository : BoardRepository
     }
 
     public Board Get(Guid id) {
-        return null;
+        var filepath = Path.Combine(path, $"{id}.json");
+        BoardDTO boardDto = JsonSerializer.Deserialize<BoardDTO>(File.ReadAllText(filepath));
+        return boardDto.ToBussines();
     }
 
     public int save(int id, bool[][] boardBools) {
@@ -76,9 +78,9 @@ public class FileSystemBoardRepository : BoardRepository
         string pathfile = Path.Combine(path, Id + ".json");
         return File.Exists(pathfile);
     }
-    public void CreateJSON<T>(string Id, Object board) {
+    public void CreateJSON<T>(string Id, Object boardDto) {
         string pathfile = Path.Combine(path, Id +".json");
-        WriteJSON<T>(pathfile, board);
+        WriteJSON<T>(pathfile, boardDto);
     }
     public Object ReadJSON<T>(int id)
     {
@@ -98,7 +100,7 @@ public class FileSystemBoardRepository : BoardRepository
             throw new Exception();
         }
     }
-    public bool UpdateJSON<T>(int Id, Object board) {
+    public bool UpdateJSON<T>(int Id, Object boardDto) {
         string[] JSON = Directory.GetFiles(path,Id.ToString()+ ".json");
         string pathfile = Path.Combine(path,Id.ToString() + ".json");
         if (JSON.Length == 0)
@@ -106,7 +108,7 @@ public class FileSystemBoardRepository : BoardRepository
             return false;
         }
 
-        WriteJSON<T>(pathfile, board);
+        WriteJSON<T>(pathfile, boardDto);
         return true;
     }
 
@@ -135,6 +137,13 @@ public static class BoardExtensions {
             Cells= cellDtos
         };
     }
+    public static Board ToBussines(this BoardDTO boardDto)
+    {
+        var cells = new List<Cell>();
+        cells.AddRange(boardDto.Cells.Select(c => c.ToBussines()));
+        return new Board(boardDto.Id, boardDto.X, boardDto.Y, cells);
+
+    }
 }
 public static class CellExtensions
 {
@@ -144,6 +153,10 @@ public static class CellExtensions
             X=cell.x,
             Y=cell.y,
         };
+    }
+    public static Cell ToBussines(this CellDTO cellDto)
+    {
+        return new Cell(cellDto.State==State.Alive, cellDto.X, cellDto.Y);
     }
 }
 public class BoardDTO {
