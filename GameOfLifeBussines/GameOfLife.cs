@@ -1,35 +1,29 @@
 ﻿
+using GameOfLifeAPI.Model;
 using KataGameOfLife;
 public class GameOfLife
 {
+    private readonly BoardRepository repository;
 
-    private Board board;
-    private int Id;
-    public GameOfLife(bool[][] ecosystem, int Id=0) {
-        this.Id = Id;
-        this.board = Board.Create(ecosystem);
+    public GameOfLife(BoardRepository repository) {
+        this.repository = repository;
+        
     }
-    public void Next()
-    {
+
+    public Guid NewGame(bool[][] ecosystem) {
+        var board = Board.Create(ecosystem);
+        repository.Save(board);
+        return board.id;
+    }
+    public void Next(Guid id) {
+        var board = repository.Get(id);
         board.Next();
+        repository.Save(board);
     }
 
-    public int GetId() {
-        return Id;
-    }
-    public bool[][] GetBoard() {
+    public bool[][] GetBoard(Guid id) {
+        var board= repository.Get(id);
         return board.GetTable();
-    }
-
-    public override bool Equals(object obj)
-    {
-        if (obj == null || obj.GetType() != typeof(GameOfLife)) return false;
-        return Equals(obj as GameOfLife);
-    }
-
-    private bool Equals(GameOfLife other)
-    {
-        return this.board.Equals(other.board);
     }
 
 

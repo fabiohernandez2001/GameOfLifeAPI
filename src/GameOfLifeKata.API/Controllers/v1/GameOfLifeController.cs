@@ -13,7 +13,11 @@ namespace GameOfLifeKata.API.Controllers.v1
     [ApiController]
     public class GameOfLifeControllerV1 : ControllerBase
     {
+        private readonly GameOfLife game;
 
+        public GameOfLifeControllerV1(GameOfLife game) {
+            this.game = game;
+        }
         /// <summary>
         /// Create a new game of life
         /// </summary>
@@ -31,14 +35,7 @@ namespace GameOfLifeKata.API.Controllers.v1
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult Post([FromBody] bool[][] board) {
-            FileSystemBoardRepository fileSystem = new FileSystemBoardRepository("");
-            for (int i = 0; i < board.Length; i++) {
-                if (board[i]==null){ return BadRequest(); }
-                for (int j = 0; j < board[i].Length; j++) {
-                    if (board[i][j]==null){ return BadRequest(); }
-                }
-            }
-            int id=fileSystem.save(0,board);
+            var id = game.NewGame(board);
             
             return Created("Game", id);
         }
@@ -54,18 +51,15 @@ namespace GameOfLifeKata.API.Controllers.v1
         // PUT api/<GameOfLifeController>/5
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult Put(int id, [FromBody] bool[][] dummy) {
-            if (id <= 0) {
-                return BadRequest();
-
+        public ActionResult Put(Guid id) {
+            try {
+                game.Next(id);
+                return Ok();
             }
-            FileSystemBoardRepository fileSystem = new FileSystemBoardRepository("");
-            if (fileSystem.get(id) == null) {
-                return NotFound(); }
-            fileSystem.save(id,dummy);
-            return Ok();
+            catch (Exception e) {
+                return NotFound();
+            }
         }
 
     }

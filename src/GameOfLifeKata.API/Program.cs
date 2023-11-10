@@ -1,11 +1,15 @@
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using GameOfLifeAPI.Model;
+using GameOfLifePersistance;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<GameOfLife>();
+builder.Services.AddScoped<BoardRepository, FileSystemBoardRepository>(_=>new FileSystemBoardRepository(@"C:\Users\fahernandez\source\repos\GameOfLifeAPI\GameOfLifePersistance\GamesJSON"));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 

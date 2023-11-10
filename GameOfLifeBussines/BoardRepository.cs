@@ -8,8 +8,7 @@ namespace GameOfLifeAPI.Model
 
         public void Save(Board board);
         public Board Get(Guid id);
-        public int save(int id, bool[][] boardBools);
-        public bool[][] get(int id);
+        
         /// <summary>
         /// 
         /// </summary>

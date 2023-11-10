@@ -25,39 +25,6 @@ public class FileSystemBoardRepository : BoardRepository
         return boardDto.ToBussines();
     }
 
-    public int save(int id, bool[][] boardBools) {
-        int newid;
-        string serializedGame;
-        if (id == 0) {
-            newid = random.Next();
-            serializedGame = JsonSerializer.Serialize(boardBools);
-        }
-        else {
-            newid = id;
-            bool[][] board = get(newid);
-            GameOfLife game = new GameOfLife(board);
-            game.Next();
-            serializedGame = JsonSerializer.Serialize(game.GetBoard());
-        }
-        string pathfile = Path.Combine(path, newid.ToString() + ".json");
-        File.WriteAllText(pathfile, serializedGame);
-        return newid;
-    }
-
-    public bool[][]? get(int id) {
-        string[] JSON = Directory.GetFiles(path, id.ToString() + ".json");
-        if (JSON.Length == 0)
-        {
-            return null;
-
-        }
-        string content = File.ReadAllText(JSON[0]);
-        var deserialize = JsonSerializer.Deserialize<bool[][]>(content);
-        if (deserialize != null)
-            return  deserialize;
-        else
-            return null;
-    }
     /*
     public int FindNewIdJSON()
     {

@@ -1,11 +1,12 @@
 
 using FluentAssertions;
+using KataGameOfLife;
 using NUnit.Framework;
 
 namespace GameOfLifeAPITest.Bussines
 {
     [TestClass]
-    public class GameOfLifeShould
+    public class BoardShould
     {
         [TearDown]
         public void Delete()
@@ -32,9 +33,9 @@ namespace GameOfLifeAPITest.Bussines
             ecosystem[1] = row2;
             ecosystem[2] = row3;
 
-            GameOfLife gameOfLife = new GameOfLife(ecosystem);
+            Board board = Board.Create(ecosystem);
 
-            gameOfLife.Next();
+            board.Next();
             bool[][] expected_ecosystem = new bool[3][];
             bool[] row4 = { true, true, true };
             bool[] row5 = { true, false, true };
@@ -43,8 +44,8 @@ namespace GameOfLifeAPITest.Bussines
             expected_ecosystem[1] = row5;
             expected_ecosystem[2] = row6;
 
-            var expectedGame = new GameOfLife(expected_ecosystem);
-            gameOfLife.Equals(expectedGame).Should().BeTrue();
+            var expected_board = Board.Create(expected_ecosystem);
+            board.Equals(expected_board).Should().BeTrue();
         }
         [Test]
         public void given_empty_neigborhood_should_return_same()
@@ -58,9 +59,9 @@ namespace GameOfLifeAPITest.Bussines
             ecosystem[1] = row2;
             ecosystem[2] = row3;
 
-            GameOfLife gameOfLife = new GameOfLife(ecosystem);
+            Board board = Board.Create(ecosystem);
 
-            gameOfLife.Next();
+            board.Next();
             bool[][] expected_ecosystem = new bool[3][];
             bool[] row4 = { false, false, false };
             bool[] row5 = { false, false, false };
@@ -69,8 +70,8 @@ namespace GameOfLifeAPITest.Bussines
             expected_ecosystem[1] = row5;
             expected_ecosystem[2] = row6;
 
-            var expectedGame = new GameOfLife(expected_ecosystem);
-            gameOfLife.Should().BeEquivalentTo(expectedGame);
+            var expectedBoard = Board.Create(expected_ecosystem);
+            board.Should().BeEquivalentTo(expectedBoard);
         }
 
         [Test]
@@ -85,9 +86,9 @@ namespace GameOfLifeAPITest.Bussines
             ecosystem[1] = row2;
             ecosystem[2] = row3;
 
-            GameOfLife gameOfLife = new GameOfLife(ecosystem);
+            Board board = Board.Create(ecosystem);
 
-            gameOfLife.Next();
+            board.Next();
             bool[][] expected_ecosystem = new bool[3][];
             bool[] row4 = { true, false, true };
             bool[] row5 = { false, false, false };
@@ -96,8 +97,8 @@ namespace GameOfLifeAPITest.Bussines
             expected_ecosystem[1] = row5;
             expected_ecosystem[2] = row6;
 
-            var expectedGame = new GameOfLife(expected_ecosystem);
-            gameOfLife.Should().BeEquivalentTo(expectedGame);
+            var expectedboard = Board.Create(expected_ecosystem);
+            board.Should().BeEquivalentTo(expectedboard);
         }
     }
 }

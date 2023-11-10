@@ -1,4 +1,5 @@
 ﻿using GameOfLifePersistance;
+using KataGameOfLife;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,7 +14,12 @@ namespace GameOfLifeKata.API.Controllers
     [ApiController]
     public class GameOfLifeControllerV2 : ControllerBase
     {
+        private readonly GameOfLife game;
 
+        public GameOfLifeControllerV2(GameOfLife game)
+        {
+            this.game = game;
+        }
         /// <summary>
         /// Create a new game of life
         /// </summary>
@@ -33,24 +39,13 @@ namespace GameOfLifeKata.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult Post([FromBody] int[][] board) {
 
-            if (board[0]== null) { return BadRequest(); }
-            if (board[0].Length!= 2) { return BadRequest(); }
             EcosystemBuilder builder = new EcosystemBuilder(board[0][0], board[0][1]);
-            for (int i = 1; i < board.Length; i++)
-            {
-                if (board[i] == null) { return BadRequest(); }
-                if (board[i].Length != 2) { return BadRequest(); }
-
+            for (int i = 1; i < board.Length; i++) {
                 builder.WithAliveCell(board[i][0], board[i][1]);
             }
-            FileSystemBoardRepository filesystem = new FileSystemBoardRepository("");
-            int newid=filesystem.save(0,builder.Build());
-            
-            if (newid < 0) {
-                return BadRequest();
+            var id = game.NewGame(builder.Build());
 
-            }
-            return Created("Game", newid);
+            return Created("Game", id);
         }
         /// <summary>
         /// Next Generation of an existing game life
@@ -66,18 +61,16 @@ namespace GameOfLifeKata.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult Put(int id, [FromBody] bool[][] dummy) {
-            if (id <= 0) {
-                return BadRequest();
-
+        public ActionResult Put(Guid id) {
+            try
+            {
+                game.Next(id);
+                return Ok();
             }
-            FileSystemBoardRepository fileSystem = new FileSystemBoardRepository("");
-            if (fileSystem.get(id) == null)
+            catch (Exception e)
             {
                 return NotFound();
             }
-            fileSystem.save(id, dummy);
-            return Ok();
         }
 
     }

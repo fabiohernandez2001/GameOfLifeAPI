@@ -45,5 +45,14 @@ namespace GameOfLifeAPIInfrastructureShould
             Board expected_board = Board.Create(initialState);
             board.Should().BeEquivalentTo(expected_board);
         }
+
+        [Test]
+        public void throw_an_exception_when_the_given_id_not_exist() {
+            var id = Guid.NewGuid();
+
+            var action = () => fileSystem.Get(id);
+
+            action.Should().Throw<IOException>();
+        }
     }
 }
