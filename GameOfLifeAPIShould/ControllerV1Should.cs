@@ -32,7 +32,7 @@ namespace GameOfLifeAPITest.API
             var mockService = Substitute.For<BoardRepository>();
             
             GameOfLife game = new GameOfLife(mockService);
-            GameOfLifeControllerV1 controller = new GameOfLifeControllerV1(game);
+            GameOfLifeController controller = new GameOfLifeController(game);
             bool[][] goodRequest = new bool[1][];
             goodRequest[0] = new bool[1];
             goodRequest[0][0] = true;
@@ -46,7 +46,7 @@ namespace GameOfLifeAPITest.API
             var mockService = Substitute.For<BoardRepository>();
 
             GameOfLife game = new GameOfLife(mockService);
-            GameOfLifeControllerV1 controller = new GameOfLifeControllerV1(game);
+            GameOfLifeController controller = new GameOfLifeController(game);
             bool[][] goodRequest = new bool[1][];
             goodRequest[0] = new bool[1];
             goodRequest[0][0] = true;
@@ -66,7 +66,7 @@ namespace GameOfLifeAPITest.API
             mockService.Get(Arg.Any<Guid>()).Throws(new Exception());
             Guid Id= Guid.NewGuid();
             GameOfLife game = new GameOfLife(mockService);
-            GameOfLifeControllerV1 controller = new GameOfLifeControllerV1(game);
+            GameOfLifeController controller = new GameOfLifeController(game);
             ActionResult action = controller.Put(Id);
 
             action.Should().BeEquivalentTo(controller.StatusCode(404));

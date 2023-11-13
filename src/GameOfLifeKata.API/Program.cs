@@ -2,16 +2,35 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using GameOfLifeAPI.Model;
 using GameOfLifePersistance;
+using Asp.Versioning;
+using GameOfLifeKata.API;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddControllers();
 builder.Services.AddScoped<GameOfLife>();
 builder.Services.AddScoped<BoardRepository, FileSystemBoardRepository>(_=>new FileSystemBoardRepository(@"C:\Users\fahernandez\source\repos\GameOfLifeAPI\GameOfLifePersistance\GamesJSON"));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+    options.ApiVersionReader = new UrlSegmentApiVersionReader();
+}).AddApiExplorer(options =>
+    {
+        options.GroupNameFormat = "'v'VVV";
+        options.SubstituteApiVersionInUrl = true;
+    });
+
+builder.Services.AddControllers(options =>
+{
+    //options.Conventions.Add(new GroupingByNamespaceConvention());
+});
 
 
 builder.Services.AddSwaggerGen(options =>
@@ -37,7 +56,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version = "v2",
         Title = "GameOfLife API v2",
-        Description = "An ASP.NET Core Web API for managing GameOfLife items with builder",
+        Description = "An ASP.NET Core Web API for managing GameOfLife items",
         TermsOfService = new Uri("https://example.com/terms"),
         Contact = new OpenApiContact
         {
@@ -50,21 +69,33 @@ builder.Services.AddSwaggerGen(options =>
             Url = new Uri("https://example.com/license")
         }
     });
+
+
+    // using System.Reflection;
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+
 });
+
+
+builder.Services.AddHealthChecks()
+    .AddCheck<Healthchecks>("Permissions Enable");
 var app = builder.Build();
 // Configure the HTTP request pipeline.
-
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Game Of Life API V1");
+    c.SwaggerEndpoint("/swagger/v2/swagger.json", "Game Of Life API V2");
+}); 
+app.MapHealthChecks("/healthz", new HealthCheckOptions()
+{
+    Predicate = _ => true,
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
 app.MapControllers();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
+
 app.Run();

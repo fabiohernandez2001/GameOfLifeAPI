@@ -3,12 +3,12 @@
 using NUnit.Framework;
 using System.Text.Json;
 using FluentAssertions;
-using GameOfLifeKata.API.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using GameOfLifeAPI.Model;
 using NSubstitute;
 using KataGameOfLife;
 using NSubstitute.ExceptionExtensions;
+using GameOfLifeKata.API.Controllers.v2;
 
 namespace GameOfLifeAPITest.API
 {
@@ -30,7 +30,7 @@ namespace GameOfLifeAPITest.API
         public void given_good_request_when_post_should_return_created() {
             var mockService = Substitute.For<BoardRepository>();
             GameOfLife game = new GameOfLife(mockService);
-            GameOfLifeControllerV2 controller = new GameOfLifeControllerV2(game);
+            GameOfLifeController controller = new GameOfLifeController(game);
             int[][] goodRequest = new int[1][];
             goodRequest[0] = new int[2];
             goodRequest[0][0] = 1;
@@ -45,7 +45,7 @@ namespace GameOfLifeAPITest.API
         {
             var mockService = Substitute.For<BoardRepository>();
             GameOfLife game = new GameOfLife(mockService);
-            GameOfLifeControllerV2 controller = new GameOfLifeControllerV2(game);
+            GameOfLifeController controller = new GameOfLifeController(game);
             bool[][] goodRequest = new bool[1][];
             goodRequest[0] = new bool[1];
             goodRequest[0][0] = true;
@@ -64,7 +64,7 @@ namespace GameOfLifeAPITest.API
             mockService.Get(Arg.Any<Guid>()).Throws(new Exception());
             GameOfLife game = new GameOfLife(mockService);
             Guid Id = Guid.NewGuid();
-            GameOfLifeControllerV2 controller = new GameOfLifeControllerV2(game);
+            GameOfLifeController controller = new GameOfLifeController(game);
 
             ActionResult action = controller.Put(Id);
 

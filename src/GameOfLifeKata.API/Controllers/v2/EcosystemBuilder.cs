@@ -1,4 +1,4 @@
-﻿namespace GameOfLifeKata.API.Controllers;
+﻿namespace GameOfLifeKata.API.Controllers.v2;
 
 public class EcosystemBuilder
 {
@@ -7,22 +7,26 @@ public class EcosystemBuilder
     {
         ecosystem = new bool[x][];
 
-        if(areAlive) {
-            for(int i = 0; i < x; i++) {
+        if (areAlive)
+        {
+            for (int i = 0; i < x; i++)
+            {
                 ecosystem[i] = new bool[y];
-                for(int j = 0; j < y; j++)
+                for (int j = 0; j < y; j++)
                 {
                     ecosystem[i][j] = true;
                 }
             }
         }
-        else {
-            for (int i = 0; i < x; i++) {
-                ecosystem[i]= new bool[y];
+        else
+        {
+            for (int i = 0; i < x; i++)
+            {
+                ecosystem[i] = new bool[y];
             }
         }
     }
-    public EcosystemBuilder WithAliveCell(int x, int y) 
+    public EcosystemBuilder WithAliveCell(int x, int y)
     {
         ecosystem[x][y] = true;
         return this;
@@ -32,7 +36,7 @@ public class EcosystemBuilder
         ecosystem[x][y] = false;
         return this;
     }
-    public bool[][] Build() 
+    public bool[][] Build()
     {
         return ecosystem;
     }

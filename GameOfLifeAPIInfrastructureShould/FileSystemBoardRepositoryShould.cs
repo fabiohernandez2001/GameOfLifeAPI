@@ -1,5 +1,7 @@
 ﻿using System.Text.Json;
 using FluentAssertions;
+using GameOfLifeInfrastructure.DTO;
+using GameOfLifeInfrastructure.Extensions;
 using GameOfLifePersistance;
 using KataGameOfLife;
 using NUnit.Framework;
