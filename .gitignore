@@ -362,3 +362,7 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /GameOfLifeAPI/Persistance/GamesJSON
+/base-docker-infrastructure/base-docker-infrastructure
+/published
+/base-docker-infrastructure.zip
+/docker-compose.yaml
