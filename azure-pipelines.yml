@@ -42,7 +42,7 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: false
-    projects: './src/GameOfLifeKata.API/GameOfLife.Kata.API.csproj'
+    projects: './src/GameOfLifeKata.API/GameOfLifeKata.API.csproj'
     arguments: '-c Release -o $(build.artifactstagingdirectory) --no-restore --no-build'
 
 - task: PublishBuildArtifacts@1
