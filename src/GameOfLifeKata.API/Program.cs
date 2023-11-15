@@ -95,7 +95,7 @@ namespace GameOfLifeKata.API
                 Predicate = _ => true,
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             });
-
+            app.UseHealthChecksPrometheusExporter("/healthmetrics");
             app.MapControllers();
 
             app.Run();
