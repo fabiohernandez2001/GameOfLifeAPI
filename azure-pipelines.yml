@@ -10,23 +10,41 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+- task: UseDotNet@2
+  displayName: 'Install .NET Core SDK'
+  inputs:
+    version: 7.x
+    performMultiLevelLookup: true
+    includePreviewVersions: true # Required for preview versions
+
 - task: DotNetCoreCLI@2
-  displayName: Dotnet Restore
+  displayName: 'Dotnet Restore'
   inputs:
     command: 'restore'
     projects: 'GameOfLifeAPI.sln'
     feedsToUse: 'select'
 - task: DotNetCoreCLI@2
+  displayName: 'Dotnet Build'
+  inputs:
+    command: 'build'
+    projects: './GameOfLifeAPI.sln'
+    arguments: '-c Release --no-restore --no-build'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Dotnet test'
   inputs:
     command: 'test'
     projects: './GameOfLifeAPI.sln'
     arguments: '-c Release --no-restore --no-build'
+
 - task: DotNetCoreCLI@2
+  displayName: 'Dotnet publish'
   inputs:
     command: 'publish'
     publishWebProjects: false
     projects: './src/GameOfLifeKata.API/GameOfLife.Kata.API.csproj'
     arguments: '-c Release -o $(build.artifactstagingdirectory)//out --no-restore --no-build'
+
 - task: PublishBuildArtifacts@1
   displayName: 'Resulted published'
   inputs:
