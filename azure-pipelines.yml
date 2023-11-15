@@ -4,16 +4,30 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+- main
 
 pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: DotNetCoreCLI@2
+  displayName: Dotnet Restore
+  inputs:
+    command: 'restore'
+    projects: 'GameOfLifeAPI.sln'
+    feedsToUse: 'select'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: './GameOfLifeAPI.sln'
+    arguments: '-c Release --no-restore --no-build'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: './src/GameOfLifeKata.API/GameOfLife.Kata.API.csproj'
+    arguments: '-c Release -o $(build.artifactstagingdirectory)//out --no-restore --no-build'
+- task: PublishBuildArtifacts@1
+  displayName: 'Resulted published'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
