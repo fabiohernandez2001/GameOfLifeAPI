@@ -10,6 +10,19 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+- task: Docker@2
+  inputs:
+    containerRegistry: 'fabiodockerregistry'
+    command: 'login'
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'fabiodockerregistry'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags: |
+      $(Build.BuildId)
+      latest
 - task: UseDotNet@2
   displayName: 'Install .NET Core SDK'
   inputs:
