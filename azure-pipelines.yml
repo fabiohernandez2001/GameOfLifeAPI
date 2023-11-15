@@ -28,14 +28,14 @@ steps:
   inputs:
     command: 'build'
     projects: './GameOfLifeAPI.sln'
-    arguments: '-c Release --no-restore --no-build'
+    arguments: '--no-restore'
 
 - task: DotNetCoreCLI@2
   displayName: 'Dotnet test'
   inputs:
     command: 'test'
     projects: './GameOfLifeAPI.sln'
-    arguments: '-c Release --no-restore --no-build'
+    arguments: ' --no-restore --no-build'
 
 - task: DotNetCoreCLI@2
   displayName: 'Dotnet publish'
